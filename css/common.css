@@ -1,0 +1,267 @@
+/* Common Styles */
+:root {
+    --primary-color: #2E7D32;  /* Forest Green */
+    --secondary-color: #81C784;  /* Light Green */
+    --dark-color: #1B5E20;  /* Dark Green */
+    --light-color: #F1F8E9;  /* Light Sage */
+    --text-color: #2E3B0E;  /* Dark Olive */
+    --transition: all 0.3s ease;
+}
+
+body.homepage {
+    background-color: var(--light-color);
+    background-image: url('images/eco-construction.jpg');
+}
+body:not(.homepage) { background: none; }
+
+/* Navbar Styles */
+.navbar {
+    background: transparent !important;
+    padding: 20px 0;
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.scrolled .nav-link {
+    color: #333 !important;
+}
+
+.navbar.scrolled .navbar-brand {
+    color: #333 !important;
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.nav-link {
+    color: #fff !important;
+    font-weight: 500;
+    margin: 0 10px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    transform: translateY(-2px);
+    color: #007bff !important;
+}
+
+.navbar-nav {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+}
+
+.nav-link.active {
+    color: var(--primary-color) !important;
+    font-weight: 600;
+}
+
+/* Hero Section */
+/* .hero-section {
+    background-image: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=2070&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    overflow: hidden;
+    margin-top: 0;
+} */
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6));
+    z-index: 1;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Floating Contact Button */
+.floating-contact {
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    z-index: 1000;
+}
+
+.floating-contact-btn {
+    background: var(--primary-color);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: var(--transition);
+}
+
+.floating-contact-btn:hover {
+    transform: scale(1.1);
+    background: #0056b3;
+}
+
+/* Scroll to Top Button */
+.scroll-top {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: var(--primary-color);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 1000;
+}
+
+.scroll-top.visible {
+    opacity: 1;
+}
+
+/* Footer Styles */
+.footer {
+    background: linear-gradient(135deg, var(--dark-color), #1B5E20);
+    color: white;
+    padding: 4rem 0 2rem;
+}
+
+.footer-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+}
+
+.footer-nav .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    transition: var(--transition);
+}
+
+.footer-nav .nav-link:hover {
+    color: white;
+}
+
+.footer-contact span {
+    display: block;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Common Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Responsive Styles */
+@media (max-width: 991px) {
+    .navbar-nav {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px;
+        border-radius: 15px;
+        margin-top: 1rem;
+    }
+
+    .nav-link {
+        color: var(--text-color) !important;
+        text-shadow: none;
+    }
+
+    .navbar-brand {
+        color: var(--text-color) !important;
+        text-shadow: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+}
+
+/* Sticky Social Icons */
+.sticky-social-icons {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 1000;
+}
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: #007bff;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+.social-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #007bff, #00ff88);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: -1;
+}
+.social-icon:hover {
+    transform: translateX(-8px) scale(1.1);
+    color: white;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.social-icon:hover::before {
+    opacity: 1;
+}
+.social-icon.whatsapp { color: #25D366; }
+.social-icon.whatsapp:hover { background-color: #25D366; color: #fff; }
+.social-icon.instagram { color: #E4405F; }
+.social-icon.instagram:hover { background-color: #E4405F; color: #fff; }
+.social-icon.facebook { color: #1877F2; }
+.social-icon.facebook:hover { background-color: #1877F2; color: #fff; } 

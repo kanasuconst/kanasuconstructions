@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanasu Design and Construction - Get Quote</title>
+    <meta name="description" content="Request a custom construction quote from Kanasu Design & Construction. Choose a plan, enter details, and get an estimated cost.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/get-quote.css">
+    <style>
+        .scroll-top {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: #2E7D32;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-size: 1.7rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .scroll-top.visible {
+            opacity: 1;
+        }
+        .scroll-top i {
+            vertical-align: middle;
+        }
+        .quote-submit-btn {
+            background: linear-gradient(90deg, #007bff 0%, #00c6ff 100%);
+            color: #fff;
+            border: none;
+            outline: none;
+            border-radius: 2rem;
+            font-size: 1.18rem;
+            font-weight: 600;
+            box-shadow: 0 4px 18px rgba(0,123,255,0.08);
+            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+        }
+        .quote-submit-btn:focus {
+            outline: 2px solid #0056b3;
+            outline-offset: 2px;
+            background: linear-gradient(90deg, #0056b3 0%, #00c6ff 100%);
+        }
+        .quote-submit-btn:hover {
+            background: linear-gradient(90deg, #0056b3 0%, #007bff 100%);
+            color: #fff;
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 32px rgba(0,123,255,0.13);
+        }
+    </style>
+</head>
+<body>
+     <!-- Navbar -->
+     <nav class="navbar navbar-expand-lg fixed-top bg-transparent premium-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="index.html" style="font-size:1.6rem;font-weight:700;color:#fff;">
+                <img src="images/KANASU-LOGO.png" alt="Kanasu Logo" style="height:32px;width:auto;margin-right:10px;">
+                <span style="color:#fff;">Kanasu</span>
+                <span class="ms-1" style="color:#fff;">Design & Construction</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="get-quote.html">Get Quote</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.html">Admin Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section -->
+    <section class="hero-section get-quote position-relative" style="background-image: url('images/get-quote-hero.jpg'); background-size: cover; background-position: center; min-height: 60vh; background-color: #222;">
+        <div class="hero-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);z-index:1;"></div>
+        <div class="container text-center text-white" style="position:relative;z-index:2;">
+            <h1 class="display-3 fw-bold" data-aos="fade-up">Get a Quote</h1>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100">Let's build something sustainable together. Fill out the form below to get a customized quote for your eco-friendly project.</p>
+        </div>
+    </section>
+
+    <!-- Quote Form Section -->
+    <section class="quote-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="quote-card" data-aos="fade-up">
+                        <h2 class="text-center mb-4">Request a Quote</h2>
+                        <form id="quoteForm">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="planType" class="form-label">Select Plan</label>
+                                        <select class="form-select" id="planType" required>
+                                            <option value="">Choose a plan...</option>
+                                            <option value="basic">Basic Plan</option>
+                                            <option value="standard">Standard Plan</option>
+                                            <option value="premium">Premium Plan</option>
+                                            <option value="luxury">Luxury Plan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="areaSize" class="form-label">Area Size (sq ft)</label>
+                                        <input type="number" class="form-control" id="areaSize" min="100" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" id="name" required pattern="^[A-Za-z ]+$" maxlength="50" placeholder="Enter your full name (letters only)">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email" required pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$" placeholder="Enter your Gmail address">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" id="phone" required pattern="^[6-9][0-9]{9}$" maxlength="10" minlength="10" placeholder="10-digit Indian mobile number">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="location" class="form-label">Location</label>
+                                        <input type="text" class="form-control" id="location" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="message" class="form-label">Additional Requirements</label>
+                                        <textarea class="form-control" id="message" rows="4" maxlength="500" placeholder="Type your message (max 500 characters)"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-gradient quote-submit-btn w-100 py-3 fw-bold fs-5" aria-label="Submit quote request" style="border-radius: 2rem; letter-spacing: 0.5px; box-shadow: 0 4px 18px rgba(0,123,255,0.08); transition: background 0.2s, box-shadow 0.2s;">Submit <i class="fas fa-paper-plane ms-2"></i></button>
+                                </div>
+                                <div class="col-12">
+                                    <div class="alert alert-success d-none" id="successMessage">
+                                        Your quote request has been submitted successfully. We'll get back to you soon!
+                                    </div>
+                                    <div class="alert alert-danger d-none" id="errorMessage"></div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Cost Preview -->
+                        <div class="cost-preview d-none" id="costPreview">
+                            <h3 class="text-center mb-3">Estimated Cost</h3>
+                            <div class="cost-amount text-center" id="costAmount"></div>
+                            <div class="plan-features" id="planFeatures">
+                                <h4 class="mb-3">Plan Features</h4>
+                                <div class="feature-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Sticky Icons -->
+    <div class="sticky-social-icons">
+        <a href="https://wa.me/918548878820" class="social-icon whatsapp" target="_blank" aria-label="WhatsApp" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://www.instagram.com/kanasudesing_construction_?igsh=MXJlbnhtOTRmeThqOQ==" class="social-icon instagram" target="_blank" aria-label="Instagram" rel="noopener noreferrer">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
+
+    <!-- Floating Contact Button -->
+    <!-- <div class="floating-contact">
+        <a href="contact.html" class="floating-contact-btn">
+            <i class="fas fa-headset"></i>
+        </a>
+    </div> -->
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer py-5" style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d); color: white;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0 text-center text-md-start">
+                    <a href="index.html" class="footer-logo display-6 fw-bold" style="color: #fff; text-decoration: none;">Kanasu Design & Construction</a>
+                    <p class="mt-2">Building Dreams Into Reality</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <ul class="nav flex-column flex-md-row justify-content-center gap-3">
+                        <li class="nav-item"><a class="nav-link px-2" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="projects.html">Projects</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="services.html">Services</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="contact.html">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="get-quote.html">Get Quote</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="admin.html">Admin Login</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <div class="footer-contact mt-2">
+                        <span><i class="fas fa-phone-alt me-2"></i>+91 8548878820 | +91 9611574787</span><br>
+                        <span><i class="fas fa-envelope me-2"></i>kanasudesignandconstruction@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="text-center small">&copy; 2025 Kanasu Design & Construction. All Rights Reserved.</div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 end-5 z-1050 px-4 py-3 rounded shadow-lg text-white font-semibold bg-success d-none" style="min-width:220px;transition:opacity 0.4s;opacity:0;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll to top functionality
+        const scrollTop = document.querySelector('.scroll-top');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+        scrollTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+    <script type="module">
+        import { submitQuoteForm, calculateQuoteCost } from './js/forms.js';
+
+        const quoteForm = document.getElementById('quoteForm');
+        const costPreview = document.getElementById('costPreview');
+        const costAmount = document.getElementById('costAmount');
+        const planFeatures = document.getElementById('planFeatures');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const toast = document.getElementById('toast');
+
+        // Plan features data
+        const planFeaturesData = {
+            basic: [
+                'Standard quality materials',
+                'Basic interior finishes',
+                'Standard fixtures and fittings',
+                'Basic electrical and plumbing',
+                'Standard flooring options'
+            ],
+            standard: [
+                'Premium quality materials',
+                'Enhanced interior finishes',
+                'Upgraded fixtures and fittings',
+                'Advanced electrical and plumbing',
+                'Premium flooring options',
+                'Basic smart home features'
+            ],
+            premium: [
+                'High-end quality materials',
+                'Luxury interior finishes',
+                'Premium fixtures and fittings',
+                'Advanced electrical and plumbing',
+                'Luxury flooring options',
+                'Advanced smart home features',
+                'Custom design elements'
+            ],
+            luxury: [
+                'Ultra-premium quality materials',
+                'Bespoke interior finishes',
+                'Luxury fixtures and fittings',
+                'State-of-the-art electrical and plumbing',
+                'Premium flooring options',
+                'Complete smart home integration',
+                'Custom design elements',
+                'Premium security features'
+            ]
+        };
+
+        // Calculate and display cost when plan or area changes
+        function updateCost() {
+            const plan = document.getElementById('planType').value;
+            const area = document.getElementById('areaSize').value;
+            
+            if (plan && area) {
+                const cost = calculateQuoteCost(plan, area);
+                costAmount.textContent = `₹${cost.toLocaleString()}`;
+                
+                // Update plan features
+                const featureList = planFeatures.querySelector('.feature-list');
+                featureList.innerHTML = planFeaturesData[plan].map(feature => `
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>${feature}</span>
+                    </div>
+                `).join('');
+                
+                costPreview.classList.remove('d-none');
+            } else {
+                costPreview.classList.add('d-none');
+            }
+        }
+
+        document.getElementById('planType').addEventListener('change', updateCost);
+        document.getElementById('areaSize').addEventListener('input', updateCost);
+
+        function showToast(msg, color = '#198754') {
+            toast.textContent = msg;
+            toast.style.background = color;
+            toast.classList.remove('d-none');
+            toast.classList.add('visible');
+            setTimeout(() => {
+                toast.classList.remove('visible');
+                setTimeout(() => toast.classList.add('d-none'), 400);
+            }, 2600);
+        }
+
+        // Handle form submission
+        quoteForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            let valid = true;
+            let name = document.getElementById('name');
+            let email = document.getElementById('email');
+            let phone = document.getElementById('phone');
+            let message = document.getElementById('message');
+            let errorMsg = '';
+            if (!/^[A-Za-z ]+$/.test(name.value)) {
+                valid = false;
+                errorMsg = 'Full Name must contain only letters and spaces.';
+            } else if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email.value)) {
+                valid = false;
+                errorMsg = 'Email must be a valid Gmail address.';
+            } else if (!/^[6-9][0-9]{9}$/.test(phone.value)) {
+                valid = false;
+                errorMsg = 'Phone must be a 10-digit Indian mobile number.';
+            } else if (message.value.length > 500) {
+                valid = false;
+                errorMsg = 'Message cannot exceed 500 characters.';
+            }
+            if (!valid) {
+                errorMessage.textContent = errorMsg;
+                errorMessage.classList.remove('d-none');
+                successMessage.classList.add('d-none');
+                return;
+            } else {
+                errorMessage.classList.add('d-none');
+            }
+            
+            const formData = {
+                planType: document.getElementById('planType').value,
+                areaSize: document.getElementById('areaSize').value,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                message: document.getElementById('message').value
+            };
+
+            const result = await submitQuoteForm(formData);
+            
+            if (result.success) {
+                showToast('Your quote request has been sent!');
+                successMessage.classList.remove('d-none');
+                errorMessage.classList.add('d-none');
+                quoteForm.reset();
+                costPreview.classList.add('d-none');
+            } else {
+                showToast('Failed to send quote.', '#dc3545');
+                errorMessage.textContent = result.error;
+                errorMessage.classList.remove('d-none');
+                successMessage.classList.add('d-none');
+            }
+        });
+    </script>
+</body>
+</html>

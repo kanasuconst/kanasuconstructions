@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanasu Design and Construction - Admin Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-section.admin .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Password toggle styling */
+        .password-wrapper {
+            position: relative;
+        }
+        
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+        
+        .password-toggle-btn:hover {
+            color: #007bff;
+        }
+        
+        .password-toggle-btn:focus {
+            outline: none;
+            color: #007bff;
+        }
+        
+        .password-wrapper .form-control {
+            padding-right: 45px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top bg-transparent premium-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="index.html" style="font-size:1.6rem;font-weight:700;color:#fff;">
+                <img src="images/KANASU-LOGO.png" alt="Kanasu Logo" style="height:32px;width:auto;margin-right:10px;">
+                <span style="color:#fff;">Kanasu</span>
+                <span class="ms-1" style="color:#fff;">Design & Construction</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="get-quote.html">Get Quote</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="admin.html">Admin Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section admin position-relative" style="background-image: url('images/admin-hero.jpg') !important; background-size: cover !important; background-position: center !important; min-height: 60vh; background-color: #222;">
+        <div class="hero-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.65);z-index:1;"></div>
+        <div class="container text-center text-white" style="position:relative;z-index:2;">
+            <h1 class="display-3 fw-bold" data-aos="fade-up">Admin Login</h1>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100">Access your dashboard to manage sustainable building projects</p>
+        </div>
+    </section>
+
+    <!-- Login Form Section -->
+    <section class="login-section py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="login-card" data-aos="fade-up">
+                        <div class="card-header text-center">
+                            <h3 class="mb-0">Login to Dashboard</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="adminLoginForm">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="password-wrapper position-relative">
+                                        <input type="password" class="form-control" id="password" required>
+                                        <button type="button" class="password-toggle-btn" id="passwordToggle" aria-label="Toggle password visibility">
+                                            <i class="fas fa-eye" id="passwordToggleIcon"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger d-none" id="errorMessage"></div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Sticky Icons -->
+    <div class="sticky-social-icons">
+        <a href="https://wa.me/918548878820" class="social-icon whatsapp" target="_blank" aria-label="WhatsApp" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://www.instagram.com/kanasudesing_construction_?igsh=MXJlbnhtOTRmeThqOQ==" class="social-icon instagram" target="_blank" aria-label="Instagram" rel="noopener noreferrer">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
+
+    <!-- Floating Contact Button -->
+    <div class="floating-contact">
+        <a href="contact.html" class="floating-contact-btn">
+            <i class="fas fa-headset"></i>
+        </a>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer py-5" style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d); color: white;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0 text-center text-md-start">
+                    <a href="index.html" class="footer-logo display-6 fw-bold" style="color: #fff; text-decoration: none;">Kanasu Design & Construction</a>
+                    <p class="mt-2">Building Dreams Into Reality</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <ul class="nav flex-column flex-md-row justify-content-center gap-3">
+                        <li class="nav-item"><a class="nav-link px-2" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="projects.html">Projects</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="services.html">Services</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="contact.html">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="get-quote.html">Get Quote</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="admin.html">Admin Login</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <div class="footer-contact mt-2">
+                        <span><i class="fas fa-phone-alt me-2"></i>+91 8548878820 | +91 9611574787</span><br>
+                        <span><i class="fas fa-envelope me-2"></i>kanasudesignandconstruction@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="text-center small">&copy; 2025 Kanasu Design & Construction. All Rights Reserved.</div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script type="module">
+        import './js/supabase-config.js';
+        import { adminLogin } from './js/admin-auth.js';
+
+        const loginForm = document.getElementById('adminLoginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordField = document.getElementById('password');
+        const passwordToggleIcon = document.getElementById('passwordToggleIcon');
+
+        // Password visibility toggle functionality
+        passwordToggle.addEventListener('click', function() {
+            const isPassword = passwordField.type === 'password';
+            passwordField.type = isPassword ? 'text' : 'password';
+            passwordToggleIcon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
+        });
+
+        // Hide error message when user starts typing
+        document.getElementById('email').addEventListener('input', function() {
+            errorMessage.classList.add('d-none');
+        });
+        
+        passwordField.addEventListener('input', function() {
+            errorMessage.classList.add('d-none');
+        });
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = passwordField.value;
+            const result = await adminLogin(email, password);
+            if (result.success) {
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                // Only clear the password value, not the DOM element
+                passwordField.value = '';
+                errorMessage.textContent = result.error;
+                errorMessage.classList.remove('d-none');
+            }
+        });
+
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        const scrollTop = document.querySelector('.scroll-top');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+        scrollTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

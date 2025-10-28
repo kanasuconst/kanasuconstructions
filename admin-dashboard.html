@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanasu Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/favicon.ico">
+    <style>
+        body { background: #f7fafc; }
+        .sidebar {
+            min-height: 100vh;
+            background: #fff;
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            width: 240px;
+            z-index: 1040;
+            transition: left 0.3s;
+        }
+        .sidebar .nav-link {
+            color: #222;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin-bottom: 0.25rem;
+            padding: 0.75rem 1rem 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: background 0.18s, color 0.18s, border-color 0.18s;
+        }
+        .sidebar .nav-link .sidebar-icon {
+            font-size: 1.25rem;
+            opacity: 0.85;
+            transition: color 0.18s, opacity 0.18s;
+        }
+        .sidebar .nav-link.active, .sidebar .nav-link:focus {
+            background: #e9f7ef !important;
+            color: #198754 !important;
+            font-weight: 700;
+            border-left: 4px solid #198754;
+            box-shadow: 0 2px 8px rgba(25,135,84,0.06);
+        }
+        .sidebar .nav-link.active .sidebar-icon, .sidebar .nav-link:focus .sidebar-icon {
+            color: #198754 !important;
+            opacity: 1;
+        }
+        .sidebar .nav-link:hover {
+            background: #f3f6fa !important;
+            color: #198754 !important;
+            border-left: 4px solid #b6e4c7;
+        }
+        .sidebar-logo {
+            font-weight: bold;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            color: #198754;
+            margin-bottom: 2rem;
+        }
+        .sidebar-footer {
+            margin-top: auto;
+            padding-bottom: 2rem;
+        }
+        .main-content {
+            margin-left: 240px;
+            min-height: 100vh;
+            padding: 2rem 1rem 1rem 1rem;
+            background: #f7fafc;
+            transition: margin-left 0.3s;
+        }
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1100;
+            background: #198754;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        @media (max-width: 991px) {
+            .sidebar { left: -100vw; }
+            .sidebar.open { left: 0; }
+            .main-content { margin-left: 0; }
+            .sidebar-toggle { display: flex; }
+            .sidebar-overlay { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.2); z-index: 1039; }
+            .sidebar-overlay.d-none { display: none; }
+            .sidebar-logo { font-size: 1.25rem; }
+            .profile-avatar { width:48px;height:48px; font-size:1.25rem; }
+            .profile-section { margin-bottom: 1.5rem; }
+        }
+        .modal-backdrop { z-index: 1050; }
+        .fw-bold.table-success { background: #e9f7ef !important; }
+        .profile-section {
+            margin-bottom: 2rem;
+        }
+        .profile-avatar {
+            box-shadow: 0 4px 16px rgba(25,135,84,0.15), 0 1.5px 6px rgba(56,189,248,0.10);
+            border: 3px solid #34d399;
+            transition: transform 0.2s;
+        }
+        .profile-avatar:hover {
+            transform: scale(1.05) translateY(-2px);
+        }
+        .profile-status .online-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #22c55e;
+            margin-right: 4px;
+            box-shadow: 0 0 0 2px #fff;
+            animation: blink 1.2s infinite alternate;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+        .kanasu-admin-title {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #34d399 0%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            text-shadow: 0 2px 8px rgba(25,135,84,0.10);
+        }
+        .project-img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            aspect-ratio: 3/4;
+            border-radius: 0.5rem 0.5rem 0 0;
+            background: #f7fafc;
+        }
+        .testimonial-img {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            aspect-ratio: 3/4;
+            border-radius: 0.5rem;
+            background: #f7fafc;
+            border: 2px solid #e5e7eb;
+        }
+        @media (max-width: 991px) {
+            .project-img { height: 180px; }
+            .testimonial-img { width: 40px; height: 54px; }
+        }
+        
+        /* Password toggle styling */
+        .password-wrapper {
+            position: relative;
+        }
+        
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+        
+        .password-toggle-btn:hover {
+            color: #198754;
+        }
+        
+        .password-toggle-btn:focus {
+            outline: none;
+            color: #198754;
+        }
+        
+        .password-wrapper .form-control {
+            padding-right: 45px;
+        }
+    </style>
+</head>
+<body>
+<button class="sidebar-toggle d-lg-none" id="sidebarToggle"><i class="fa fa-bars"></i></button>
+<div class="sidebar d-flex flex-column p-4" id="sidebar">
+    <div>
+        <div class="flex flex-col items-center py-8 profile-section">
+            <div class="kanasu-admin-title mb-3 text-center">Kanasu Admin</div>
+            <div class="d-flex justify-content-center mb-3 w-100">
+                <img src="images/client1.jpg" alt="Admin Profile" class="profile-avatar shadow-lg border border-3 border-success" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; background: #fff;" />
+            </div>
+            <div class="d-flex align-items-center justify-content-center gap-2 profile-status">
+                <span class="fw-semibold">Admin —</span>
+                <span class="online-dot"></span>
+                <span class="text-success fw-semibold">Online</span>
+            </div>
+        </div>
+        <nav class="nav flex-column gap-1">
+            <a class="nav-link sidebar-link active" data-section="dashboard" href="#"><i class="fa-solid fa-gauge-high sidebar-icon"></i>Dashboard</a>
+            <a class="nav-link sidebar-link" data-section="projects" href="#"><i class="fa-solid fa-layer-group sidebar-icon"></i>Projects</a>
+            <a class="nav-link sidebar-link" data-section="testimonials" href="#"><i class="fa-solid fa-quote-left sidebar-icon"></i>Testimonials</a>
+            <a class="nav-link sidebar-link" data-section="contacts" href="#"><i class="fa-solid fa-address-book sidebar-icon"></i>Contacts</a>
+            <a class="nav-link sidebar-link" data-section="quotes" href="#"><i class="fa-solid fa-file-lines sidebar-icon"></i>Quotes</a>
+            <a class="nav-link sidebar-link" data-section="reset-password" href="#"><i class="fa-solid fa-key sidebar-icon"></i>Reset Password</a>
+        </nav>
+    </div>
+    <div class="sidebar-footer mt-auto">
+        <hr>
+        <div class="d-flex flex-column align-items-center">
+            <span id="admin-email" class="small text-muted mb-2"></span>
+            <button id="logoutBtn" class="btn btn-danger w-100"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i>Logout</button>
+        </div>
+        <div class="text-center small text-muted mt-4" style="opacity:0.7;">
+            &copy; 2025 Kanasu Design & Construction
+        </div>
+    </div>
+</div>
+<div class="sidebar-overlay d-none" id="sidebarOverlay"></div>
+<main class="main-content">
+    <div class="container-fluid">
+        <div id="toast" class="alert position-fixed top-0 end-0 m-4 d-none" style="z-index:1055;min-width:220px;"></div>
+        <!-- Dashboard Section -->
+        <section id="dashboard-section">
+            <h1 class="h3 fw-bold mb-4 text-success">Dashboard Overview</h1>
+            <div class="row g-4 mb-4">
+                <div class="col-6 col-md-3">
+                    <div class="card shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="fa-solid fa-layer-group fa-2x text-success mb-2"></i>
+                            <div class="fw-semibold">Projects</div>
+                            <div id="stat-projects" class="display-6">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="fa-solid fa-quote-left fa-2x text-success mb-2"></i>
+                            <div class="fw-semibold">Testimonials</div>
+                            <div id="stat-testimonials" class="display-6">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="fa-solid fa-address-book fa-2x text-success mb-2"></i>
+                            <div class="fw-semibold">Contacts</div>
+                            <div id="stat-contacts" class="display-6">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="fa-solid fa-file-lines fa-2x text-success mb-2"></i>
+                            <div class="fw-semibold">Quotes</div>
+                            <div id="stat-quotes" class="display-6">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="projects-section" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h4 fw-bold text-success">Projects Manager</h2>
+                <button id="addProjectBtn" class="btn btn-success"><i class="fa-solid fa-plus me-2"></i>Add Project</button>
+            </div>
+            <div id="projectsList" class="row g-4"></div>
+            <!-- Project Modal -->
+            <div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="projectModalLabel">Add Project</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="projectForm">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="projectTitle" class="form-label">Title</label>
+                                    <input id="projectTitle" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="projectDescription" class="form-label">Description</label>
+                                    <textarea id="projectDescription" class="form-control" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="projectStatus" class="form-label">Status</label>
+                                    <select id="projectStatus" class="form-select">
+                                        <option value="Active">Active</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Completed">Completed</option>
+                                        <option value="On Hold">On Hold</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="projectImage" class="form-label">Image</label>
+                                    <input id="projectImage" type="file" accept="image/*" class="form-control">
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <img id="projectPreview" class="img-thumbnail d-none" style="max-width:120px;max-height:120px;" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button id="saveProjectBtn" type="submit" class="btn btn-success">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="testimonials-section" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h4 fw-bold text-success">Testimonials Manager</h2>
+                <button id="addTestimonialBtn" class="btn btn-success"><i class="fa-solid fa-plus me-2"></i>Add Testimonial</button>
+            </div>
+            <div id="testimonialsList" class="row g-4"></div>
+            <!-- Testimonial Modal -->
+            <div class="modal fade" id="testimonialModal" tabindex="-1" aria-labelledby="testimonialModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="testimonialModalLabel">Add Testimonial</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="testimonialForm">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="testimonialName" class="form-label">Name</label>
+                                    <input id="testimonialName" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="testimonialRole" class="form-label">Role (optional)</label>
+                                    <input id="testimonialRole" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="testimonialMessage" class="form-label">Message</label>
+                                    <textarea id="testimonialMessage" class="form-control" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="testimonialAvatar" class="form-label">Avatar</label>
+                                    <input id="testimonialAvatar" type="file" accept="image/*" class="form-control">
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <img id="testimonialPreview" class="img-thumbnail d-none" style="max-width:80px;max-height:80px;" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button id="saveTestimonialBtn" type="submit" class="btn btn-success">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="contacts-section" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h4 fw-bold text-success">Contact Requests</h2>
+                <div class="d-flex align-items-center gap-2">
+                    <label class="form-check-label small"><input type="checkbox" id="contactsUnreadOnly" class="form-check-input me-1"> Show Unread Only</label>
+                    <button id="contactsRefreshBtn" class="btn btn-outline-success btn-sm">Refresh</button>
+                </div>
+            </div>
+            <div class="table-responsive bg-white rounded-3 shadow-sm">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Name</th><th>Email</th><th>Phone</th><th>Message</th><th>Date</th><th>Status</th><th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contactsTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+        <section id="quotes-section" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h4 fw-bold text-success">Quote Requests</h2>
+                <div class="d-flex align-items-center gap-2">
+                    <label class="form-check-label small"><input type="checkbox" id="quotesUnreadOnly" class="form-check-input me-1"> Show Unread Only</label>
+                    <button id="quotesRefreshBtn" class="btn btn-outline-success btn-sm">Refresh</button>
+                </div>
+            </div>
+            <div class="table-responsive bg-white rounded-3 shadow-sm">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Name</th><th>Email</th><th>Phone</th><th>Plan</th><th>Area</th><th>Status</th><th>Read</th><th>Date</th><th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="quotesTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+        <section id="reset-password-section" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h4 fw-bold text-success">Reset Password</h2>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0"><i class="fa-solid fa-key me-2"></i>Change Admin Password</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="resetPasswordForm">
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">New Password</label>
+                                    <div class="password-wrapper position-relative">
+                                        <input type="password" class="form-control" id="newPassword" required minlength="6" placeholder="Enter new password">
+                                        <button type="button" class="password-toggle-btn" id="newPasswordToggle" aria-label="Toggle password visibility">
+                                            <i class="fas fa-eye" id="newPasswordToggleIcon"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">Password must be at least 6 characters long</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                    <div class="password-wrapper position-relative">
+                                        <input type="password" class="form-control" id="confirmPassword" required minlength="6" placeholder="Confirm new password">
+                                        <button type="button" class="password-toggle-btn" id="confirmPasswordToggle" aria-label="Toggle password visibility">
+                                            <i class="fas fa-eye" id="confirmPasswordToggleIcon"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger d-none" id="resetPasswordError"></div>
+                                <div class="alert alert-success d-none" id="resetPasswordSuccess"></div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success" id="resetPasswordBtn">
+                                        <i class="fa-solid fa-key me-2"></i>Update Password
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module">
+import { supabase } from './js/supabase-config.js';
+
+// Sidebar mobile toggle
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+sidebarToggle.addEventListener('click', () => {
+  sidebar.classList.add('open');
+  sidebarOverlay.classList.remove('d-none');
+});
+sidebarOverlay.addEventListener('click', () => {
+  sidebar.classList.remove('open');
+  sidebarOverlay.classList.add('d-none');
+});
+
+// Sidebar navigation
+const sectionLinks = document.querySelectorAll('.sidebar-link');
+const sections = [
+  'dashboard-section',
+  'projects-section',
+  'testimonials-section',
+  'contacts-section',
+  'quotes-section',
+  'reset-password-section'
+].map(id => document.getElementById(id));
+sectionLinks.forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    sectionLinks.forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    sections.forEach(sec => sec.classList.add('d-none'));
+    document.getElementById(this.getAttribute('data-section') + '-section').classList.remove('d-none');
+    if (window.innerWidth < 992) {
+      sidebar.classList.remove('open');
+      sidebarOverlay.classList.add('d-none');
+    }
+  });
+});
+sections.forEach(sec => sec.classList.add('d-none'));
+document.getElementById('dashboard-section').classList.remove('d-none');
+
+// Auth/session
+async function checkSupabaseAuth() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session || !session.user) {
+    window.location.href = 'admin.html';
+    return;
+  }
+  document.getElementById('admin-email').textContent = session.user.email;
+}
+checkSupabaseAuth();
+document.getElementById('logoutBtn').onclick = async () => {
+  await supabase.auth.signOut();
+  window.location.href = 'admin.html';
+};
+
+// Toast
+function showToast(msg, type = 'success') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = `alert alert-${type === 'error' ? 'danger' : 'success'} position-fixed top-0 end-0 m-4 show`;
+  toast.classList.remove('d-none');
+  setTimeout(() => { toast.classList.add('d-none'); toast.classList.remove('show'); }, 2500);
+}
+
+// Dashboard stats
+async function renderStats() {
+  const [{ count: projects }, { count: testimonials }, { count: contacts }, { count: quotes }] = await Promise.all([
+    supabase.from('projects').select('*', { count: 'exact', head: true }),
+    supabase.from('testimonials').select('*', { count: 'exact', head: true }),
+    supabase.from('contact_messages').select('*', { count: 'exact', head: true }),
+    supabase.from('quotes').select('*', { count: 'exact', head: true })
+  ]);
+  document.getElementById('stat-projects').textContent = projects ?? 0;
+  document.getElementById('stat-testimonials').textContent = testimonials ?? 0;
+  document.getElementById('stat-contacts').textContent = contacts ?? 0;
+  document.getElementById('stat-quotes').textContent = quotes ?? 0;
+}
+renderStats();
+
+// Projects CRUD
+const projectModal = new bootstrap.Modal(document.getElementById('projectModal'));
+let editingProject = null;
+document.getElementById('addProjectBtn').onclick = () => openProjectModal();
+function openProjectModal(project = null) {
+  editingProject = project;
+  document.getElementById('projectModalLabel').textContent = project ? 'Edit Project' : 'Add Project';
+  document.getElementById('projectTitle').value = project ? project.project_name : '';
+  document.getElementById('projectDescription').value = project ? project.description : '';
+  document.getElementById('projectStatus').value = project ? project.status || 'Active' : 'Active';
+  document.getElementById('projectPreview').src = project && project.image_url ? project.image_url : '';
+  document.getElementById('projectPreview').classList.toggle('d-none', !(project && project.image_url));
+  document.getElementById('projectImage').value = '';
+  projectModal.show();
+}
+document.getElementById('projectImage').onchange = function() {
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('projectPreview').src = e.target.result;
+      document.getElementById('projectPreview').classList.remove('d-none');
+    };
+    reader.readAsDataURL(file);
+  }
+};
+document.getElementById('projectForm').onsubmit = async function(e) {
+  e.preventDefault();
+  const project_name = document.getElementById('projectTitle').value.trim();
+  const description = document.getElementById('projectDescription').value.trim();
+  const status = document.getElementById('projectStatus').value;
+  const imageFile = document.getElementById('projectImage').files[0];
+  let error;
+  if (editingProject && editingProject.id) {
+    const { updateProject } = await import('./js/scripts.js');
+    ({ error } = await updateProject(editingProject.id, { project_name, description, status, imageFile }));
+  } else {
+    const { uploadProject } = await import('./js/scripts.js');
+    ({ error } = await uploadProject({ project_name, description, status, imageFile }));
+  }
+  if (!error) {
+    showToast(editingProject ? 'Project updated' : 'Project added');
+    renderProjects();
+    renderStats();
+  } else {
+    showToast('Error saving project', 'error');
+  }
+  projectModal.hide();
+  editingProject = null;
+};
+async function renderProjects() {
+  const projectsList = document.getElementById('projectsList');
+  projectsList.innerHTML = '<div class="col-12 text-center py-4">Loading projects...</div>';
+  const { data: projects, error } = await supabase
+    .from('projects')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) {
+    projectsList.innerHTML = '<div class="col-12 text-center text-danger py-4">Failed to load projects.</div>';
+    return;
+  }
+  if (!projects || projects.length === 0) {
+    projectsList.innerHTML = '<div class="col-12 text-center py-4">No projects found.</div>';
+    return;
+  }
+  projectsList.innerHTML = projects.map(project => {
+    let imgSrc = 'https://via.placeholder.com/400x220?text=No+Image';
+    if (project.image_url) {
+      if (project.image_url.startsWith('http')) {
+        imgSrc = project.image_url;
+      } else {
+        imgSrc = `https://pjzdfqhwgbbqsctvcveq.supabase.co/storage/v1/object/public/project-images/${project.image_url}`;
+      }
+    }
+    return `
+      <div class="col-md-6 col-lg-4">
+        <div class="card project-card h-100 mb-3">
+          <div class="position-relative">
+            <img src="${imgSrc}" class="card-img-top project-img" alt="${project.project_name}">
+            <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 delete-project-btn" data-id="${project.id}" title="Delete"><i class="fa fa-trash"></i></button>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title d-flex align-items-center justify-content-between">
+              ${project.project_name}
+              <span class="badge bg-${project.status === 'Completed' ? 'success' : project.status === 'Active' ? 'primary' : project.status === 'On Hold' ? 'warning' : 'info'} project-status-badge">${project.status || 'Active'}</span>
+            </h5>
+            <p class="card-text">${project.description}</p>
+            <button class="btn btn-outline-success btn-sm me-2 edit-project-btn" data-id="${project.id}"><i class="fa fa-edit"></i> Edit</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  // Edit project event
+  projectsList.querySelectorAll('.edit-project-btn').forEach(btn => {
+    btn.onclick = async function() {
+      const id = this.getAttribute('data-id');
+      const { data: project } = await supabase.from('projects').select('*').eq('id', id).single();
+      openProjectModal(project);
+    };
+  });
+  // Add delete event listener after rendering
+  projectsList.querySelectorAll('.delete-project-btn').forEach(btn => {
+    btn.onclick = async function() {
+      const id = this.getAttribute('data-id');
+      if (confirm('Are you sure you want to delete this project?')) {
+        const { error } = await supabase.from('projects').delete().eq('id', id);
+        if (!error) {
+          showToast('Project deleted');
+          renderProjects();
+          renderStats();
+        } else {
+          showToast('Error deleting project', 'error');
+        }
+      }
+    };
+  });
+}
+renderProjects();
+
+// Testimonials CRUD
+const testimonialModal = new bootstrap.Modal(document.getElementById('testimonialModal'));
+let editingTestimonial = null;
+document.getElementById('addTestimonialBtn').onclick = () => openTestimonialModal();
+function openTestimonialModal(testimonial = null) {
+  editingTestimonial = testimonial;
+  document.getElementById('testimonialModalLabel').textContent = testimonial ? 'Edit Testimonial' : 'Add Testimonial';
+  document.getElementById('testimonialName').value = testimonial ? testimonial.user_name : '';
+  document.getElementById('testimonialRole').value = testimonial ? (testimonial.user_role || '') : '';
+  document.getElementById('testimonialMessage').value = testimonial ? (testimonial.testimonial_text || '') : '';
+  document.getElementById('testimonialPreview').src = testimonial && testimonial.user_image_url ? testimonial.user_image_url : '';
+  document.getElementById('testimonialPreview').classList.toggle('d-none', !(testimonial && testimonial.user_image_url));
+  document.getElementById('testimonialAvatar').value = '';
+  testimonialModal.show();
+}
+document.getElementById('testimonialAvatar').onchange = function() {
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('testimonialPreview').src = e.target.result;
+      document.getElementById('testimonialPreview').classList.remove('d-none');
+    };
+    reader.readAsDataURL(file);
+  }
+};
+document.getElementById('testimonialForm').onsubmit = async function(e) {
+  e.preventDefault();
+  const user_name = document.getElementById('testimonialName').value.trim();
+  const user_role = document.getElementById('testimonialRole').value.trim();
+  const testimonial_text = document.getElementById('testimonialMessage').value.trim();
+  const imageFile = document.getElementById('testimonialAvatar').files[0];
+  let error;
+  if (editingTestimonial && editingTestimonial.id) {
+    const { updateTestimonial } = await import('./js/scripts.js');
+    ({ error } = await updateTestimonial(editingTestimonial.id, { user_name, user_role, testimonial_text, imageFile }));
+  } else {
+    const { uploadTestimonial } = await import('./js/scripts.js');
+    ({ error } = await uploadTestimonial({ user_name, user_role, testimonial_text, imageFile }));
+  }
+  if (!error) {
+    showToast(editingTestimonial ? 'Testimonial updated' : 'Testimonial added');
+    renderTestimonials();
+    renderStats();
+  } else {
+    showToast('Error saving testimonial', 'error');
+  }
+  testimonialModal.hide();
+  editingTestimonial = null;
+};
+async function renderTestimonials() {
+  const testimonialsList = document.getElementById('testimonialsList');
+  testimonialsList.innerHTML = '<div class="col-12 text-center py-4">Loading testimonials...</div>';
+  const { data: testimonials, error } = await supabase
+    .from('testimonials')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) {
+    testimonialsList.innerHTML = '<div class="col-12 text-center text-danger py-4">Failed to load testimonials.</div>';
+    return;
+  }
+  if (!testimonials || testimonials.length === 0) {
+    testimonialsList.innerHTML = '<div class="col-12 text-center py-4">No testimonials found.</div>';
+    return;
+  }
+  testimonialsList.innerHTML = testimonials.map(testimonial => `
+    <div class="col-md-6 col-lg-4">
+      <div class="card testimonial-card h-100 mb-3">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-2">
+            <img src="${testimonial.user_image_url || 'https://via.placeholder.com/70?text=User'}" class="rounded-circle me-3 testimonial-img" alt="User" >
+            <div>
+              <div class="fw-bold">${testimonial.user_name}</div>
+              <div class="text-muted small">${testimonial.created_at ? new Date(testimonial.created_at).toLocaleString() : ''}</div>
+            </div>
+          </div>
+          <div class="testimonial-text">${testimonial.testimonial_text}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+renderTestimonials();
+
+// Contacts
+async function renderContacts() {
+  const unreadOnly = document.getElementById('contactsUnreadOnly').checked;
+  const { data, error } = await supabase
+    .from('contact_messages')
+    .select('*')
+    .order('created_at', { ascending: false });
+  const tbody = document.getElementById('contactsTableBody');
+  tbody.innerHTML = '';
+  if (error) {
+    tbody.innerHTML = `<tr><td colspan="7">Error loading contacts</td></tr>`;
+    document.getElementById('stat-contacts').textContent = '0';
+    return;
+  }
+  let filtered = data;
+  if (unreadOnly) filtered = filtered.filter(c => !c.is_read);
+  filtered.forEach(contact => {
+    const tr = document.createElement('tr');
+    tr.className = contact.is_read ? '' : 'fw-bold table-success';
+    tr.innerHTML = `
+      <td>${contact.full_name}</td>
+      <td>${contact.email}</td>
+      <td>${contact.phone}</td>
+      <td>${contact.message}</td>
+      <td>${contact.created_at ? new Date(contact.created_at).toLocaleString() : ''}</td>
+      <td>
+        <button class="btn btn-sm ${contact.is_read ? 'btn-outline-secondary' : 'btn-success'} toggle-read-btn" data-id="${contact.id}" data-type="contact">
+          <i class="fa ${contact.is_read ? 'fa-eye' : 'fa-eye-slash'}"></i> ${contact.is_read ? 'Read' : 'Unread'}
+        </button>
+      </td>
+      <td><button class="btn btn-danger btn-sm">Delete</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('stat-contacts').textContent = data.length;
+  // Add toggle listeners
+  tbody.querySelectorAll('.toggle-read-btn').forEach(btn => {
+    btn.onclick = async function() {
+      const id = this.getAttribute('data-id');
+      const isRead = this.classList.contains('btn-outline-secondary');
+      const { error } = await supabase.from('contact_messages').update({ is_read: !isRead }).eq('id', id);
+      if (!error) renderContacts();
+    };
+  });
+  // Add delete event listeners
+  tbody.querySelectorAll('.btn-danger.btn-sm').forEach(btn => {
+    btn.onclick = async function() {
+      const row = this.closest('tr');
+      const id = row.querySelector('.toggle-read-btn').getAttribute('data-id');
+      if (confirm('Are you sure you want to delete this contact?')) {
+        const { error } = await supabase.from('contact_messages').delete().eq('id', id);
+        if (!error) {
+          showToast('Contact deleted');
+          renderContacts();
+          renderStats();
+        } else {
+          showToast('Error deleting contact', 'error');
+        }
+      }
+    };
+  });
+}
+document.getElementById('contactsUnreadOnly').onchange = renderContacts;
+document.getElementById('contactsRefreshBtn').onclick = renderContacts;
+renderContacts();
+
+// Quotes
+async function renderQuotes() {
+  const unreadOnly = document.getElementById('quotesUnreadOnly').checked;
+  const { data, error } = await supabase
+    .from('quotes')
+    .select('*')
+    .order('created_at', { ascending: false });
+  const tbody = document.getElementById('quotesTableBody');
+  tbody.innerHTML = '';
+  if (error) {
+    tbody.innerHTML = `<tr><td colspan="9">Error loading quotes</td></tr>`;
+    document.getElementById('stat-quotes').textContent = '0';
+    return;
+  }
+  let filtered = data;
+  if (unreadOnly) filtered = filtered.filter(q => !q.is_read);
+  filtered.forEach(quote => {
+    const tr = document.createElement('tr');
+    tr.className = quote.is_read ? '' : 'fw-bold table-success';
+    tr.innerHTML = `
+      <td>${quote.full_name}</td>
+      <td>${quote.email}</td>
+      <td>${quote.phone}</td>
+      <td>${quote.plan_type}</td>
+      <td>${quote.area}</td>
+      <td>${quote.status || 'Pending'}</td>
+      <td>
+        <button class="btn btn-sm ${quote.is_read ? 'btn-outline-secondary' : 'btn-success'} toggle-read-btn" data-id="${quote.id}" data-type="quote">
+          <i class="fa ${quote.is_read ? 'fa-eye' : 'fa-eye-slash'}"></i> ${quote.is_read ? 'Read' : 'Unread'}
+        </button>
+      </td>
+      <td>${quote.created_at ? new Date(quote.created_at).toLocaleString() : ''}</td>
+      <td><button class="btn btn-danger btn-sm">Delete</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('stat-quotes').textContent = data.length;
+  // Add toggle listeners
+  tbody.querySelectorAll('.toggle-read-btn').forEach(btn => {
+    btn.onclick = async function() {
+      const id = this.getAttribute('data-id');
+      const isRead = this.classList.contains('btn-outline-secondary');
+      const { error } = await supabase.from('quotes').update({ is_read: !isRead }).eq('id', id);
+      if (!error) renderQuotes();
+    };
+  });
+  // Add delete event listeners
+  tbody.querySelectorAll('.btn-danger.btn-sm').forEach(btn => {
+    btn.onclick = async function() {
+      const row = this.closest('tr');
+      const id = row.querySelector('.toggle-read-btn').getAttribute('data-id');
+      if (confirm('Are you sure you want to delete this quote?')) {
+        const { error } = await supabase.from('quotes').delete().eq('id', id);
+        if (!error) {
+          showToast('Quote deleted');
+          renderQuotes();
+          renderStats();
+        } else {
+          showToast('Error deleting quote', 'error');
+        }
+      }
+    };
+  });
+}
+document.getElementById('quotesUnreadOnly').onchange = renderQuotes;
+document.getElementById('quotesRefreshBtn').onclick = renderQuotes;
+renderQuotes();
+
+// Reset Password functionality
+const newPasswordToggle = document.getElementById('newPasswordToggle');
+const newPasswordField = document.getElementById('newPassword');
+const newPasswordToggleIcon = document.getElementById('newPasswordToggleIcon');
+const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
+const confirmPasswordField = document.getElementById('confirmPassword');
+const confirmPasswordToggleIcon = document.getElementById('confirmPasswordToggleIcon');
+const resetPasswordForm = document.getElementById('resetPasswordForm');
+const resetPasswordError = document.getElementById('resetPasswordError');
+const resetPasswordSuccess = document.getElementById('resetPasswordSuccess');
+const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+
+// Password visibility toggle functionality
+function setupPasswordToggle(toggleBtn, passwordField, toggleIcon) {
+  toggleBtn.addEventListener('click', function() {
+    const isPassword = passwordField.type === 'password';
+    passwordField.type = isPassword ? 'text' : 'password';
+    toggleIcon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
+  });
+}
+
+setupPasswordToggle(newPasswordToggle, newPasswordField, newPasswordToggleIcon);
+setupPasswordToggle(confirmPasswordToggle, confirmPasswordField, confirmPasswordToggleIcon);
+
+// Hide error/success messages when user starts typing
+newPasswordField.addEventListener('input', function() {
+  resetPasswordError.classList.add('d-none');
+  resetPasswordSuccess.classList.add('d-none');
+});
+
+confirmPasswordField.addEventListener('input', function() {
+  resetPasswordError.classList.add('d-none');
+  resetPasswordSuccess.classList.add('d-none');
+});
+
+// Reset password form submission
+resetPasswordForm.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const newPassword = newPasswordField.value.trim();
+  const confirmPassword = confirmPasswordField.value.trim();
+  
+  // Hide previous messages
+  resetPasswordError.classList.add('d-none');
+  resetPasswordSuccess.classList.add('d-none');
+  
+  // Validation
+  if (newPassword.length < 6) {
+    resetPasswordError.textContent = 'Password must be at least 6 characters long';
+    resetPasswordError.classList.remove('d-none');
+    return;
+  }
+  
+  if (newPassword !== confirmPassword) {
+    resetPasswordError.textContent = 'Passwords do not match';
+    resetPasswordError.classList.remove('d-none');
+    return;
+  }
+  
+  // Disable button during processing
+  resetPasswordBtn.disabled = true;
+  resetPasswordBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Updating...';
+  
+  try {
+    // Get current session
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session || !session.user) {
+      throw new Error('No active session found');
+    }
+    
+    // Update password using Supabase auth
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+    
+    if (error) {
+      throw error;
+    }
+    
+    // Success
+    resetPasswordSuccess.textContent = 'Password updated successfully! Please use your new password for future logins.';
+    resetPasswordSuccess.classList.remove('d-none');
+    
+    // Clear form
+    newPasswordField.value = '';
+    confirmPasswordField.value = '';
+    
+    // Reset password field types
+    newPasswordField.type = 'password';
+    confirmPasswordField.type = 'password';
+    newPasswordToggleIcon.className = 'fas fa-eye';
+    confirmPasswordToggleIcon.className = 'fas fa-eye';
+    
+  } catch (error) {
+    console.error('Password reset error:', error);
+    resetPasswordError.textContent = error.message || 'Failed to update password. Please try again.';
+    resetPasswordError.classList.remove('d-none');
+  } finally {
+    // Re-enable button
+    resetPasswordBtn.disabled = false;
+    resetPasswordBtn.innerHTML = '<i class="fa-solid fa-key me-2"></i>Update Password';
+  }
+});
+</script>
+</body>
+</html> 

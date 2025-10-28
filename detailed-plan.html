@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanasu Design and Construction - Plan Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/detailed-plan.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top bg-transparent premium-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="index.html" style="font-size:1.6rem;font-weight:700;color:#fff;">
+                <img src="images/KANASU-LOGO.png" alt="Kanasu Logo" style="height:32px;width:auto;margin-right:10px;">
+                <span style="color:#fff;">Kanasu</span>
+                <span class="ms-1" style="color:#fff;">Design & Construction</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="get-quote.html">Get Quote</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.html">Admin Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" style="background-image: url('images/detailed-plan-hero.jpg'); background-size: cover; background-position: center;">
+        <div class="hero-content">
+            <h1 class="hero-title" id="plan-title">Plan Details: <span class="plan-name-placeholder">[Select a Plan]</span></h1>
+            <p class="hero-subtitle">Comprehensive breakdown of features and specifications</p>
+        </div>
+    </section>
+
+    <!-- Show All Details Control -->
+    <div id="show-all-control" style="display: none; text-align: center; padding: 20px; background: rgba(255,255,255,0.1); margin: 20px 0;">
+        <button onclick="showAllSections()" class="btn btn-outline-light">
+            <i class="fas fa-th-large me-2"></i>Show All Details
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="plan-details-grid">
+            <div class="detail-category" id="designs-drawings" data-aos="fade-up">
+                <h2><i class="fas fa-drafting-compass"></i>Designs & Drawings</h2>
+                <ul>
+                    <li>Architectural Drawings (Floor Plans, Elevations, Sections)</li>
+                    <li>Structural Drawings</li>
+                    <li>3D Elevation View</li>
+                    <li>Electrical & Plumbing Drawings</li>
+                </ul>
+            </div>
+
+            <div class="detail-category" id="design-consultation" data-aos="fade-up" data-aos-delay="100">
+                <h2><i class="fas fa-pencil-ruler"></i>Design & Consultation</h2>
+                <ul>
+                    <li>Site Study & Feasibility Assessment</li>
+                    <li>Concept Development & Mood Boards</li>
+                    <li>Space Planning & Circulation Optimization</li>
+                    <li>Detailed Drawings (Architectural, Structural, MEP)</li>
+                    <li>3D Visualizations & Material Boards</li>
+                    <li>Regulatory Compliance & Approval Support</li>
+                    <li>Cost Estimation & Value Engineering</li>
+                    <li>Project Scheduling & Phasing Strategy</li>
+                    <li>Design Reviews & Client Workshops</li>
+                    <li>Handover Package (As-built Drawings & Specs)</li>
+                </ul>
+            </div>
+
+            <div class="detail-category" id="structure" data-aos="fade-up" data-aos-delay="200">
+                <h2><i class="fas fa-building"></i>Structure</h2>
+                <ul>
+                    <li>Earthwork & Foundation</li>
+                    <li>Steel (Brand & Grade)</li>
+                    <li>Cement (Brand & Grade)</li>
+                    <li>Brickwork / Blockwork</li>
+                    <li>Roofing & Waterproofing</li>
+                </ul>
+            </div>
+
+            <div class="detail-category" id="construction" data-aos="fade-up" data-aos-delay="300">
+                <h2><i class="fas fa-hard-hat"></i>Construction</h2>
+                <ul>
+                    <li>Excavation, Foundation & RCC Works (As per Structural Design)</li>
+                    <li>Masonry & Plastering (Line, Level & Plumb Checks)</li>
+                    <li>Waterproofing (Wet Areas, Terraces, Retaining Walls)</li>
+                    <li>MEP Rough-ins & Fixture Installation (Electrical/Plumbing/HVAC)</li>
+                    <li>Roofing & Weatherproofing (Approved Systems)</li>
+                    <li>Quality Assurance & Stage-wise Checklists</li>
+                    <li>Site Safety, Housekeeping & Statutory Compliance</li>
+                    <li>Material Procurement & Brand Compliance</li>
+                    <li>Daily Progress Tracking & Weekly Client Updates</li>
+                    <li>Final Snagging, Rectification & Handover</li>
+                </ul>
+            </div>
+
+            <div class="detail-category" id="kitchen" data-aos="fade-up" data-aos-delay="400">
+                <h2><i class="fas fa-utensils"></i>Kitchen</h2>
+                <ul>
+                    <li>Countertop (Material & Thickness)</li>
+                    <li>Sink (Material & Brand)</li>
+                    <li>Dado Tiles (Height & Type)</li>
+                    <li>Fittings (Brand)</li>
+                    <li>Provision for Chimney & Water Purifier</li>
+                </ul>
+            </div>
+
+            <div class="detail-category" id="bathroom" data-aos="fade-up" data-aos-delay="500">
+                <h2><i class="fas fa-bath"></i>Bathroom</h2>
+                <ul>
+                    <li>Sanitary Ware (Brand & Type)</li>
+                    <li>CP Fittings (Brand & Type)</li>
+                    <li>Wall Tiles (Height & Type)</li>
+                    <li>Flooring (Anti-skid)</li>
+                    <li>Waterproofing</li>
+                </ul>
+            </div>
+
+            <div class="detail-category" id="doors-windows" data-aos="fade-up" data-aos-delay="600">
+                <h2><i class="fas fa-door-open"></i>Doors & Windows</h2>
+                <ul>
+                    <li>Main Door (Material & Finish)</li>
+                    <li>Internal Doors (Material & Finish)</li>
+                    <li>Windows (Material & Type)</li>
+                    <li>Hardware (Locks, Hinges)</li>
+                </ul>
+            </div>
+
+            <div class="detail-category" id="painting" data-aos="fade-up" data-aos-delay="700">
+                <h2><i class="fas fa-paint-roller"></i>Painting</h2>
+                <ul>
+                    <li>Interior (Type, e.g., Emulsion with putty)</li>
+                    <li>Exterior (Type, e.g., Weatherproof paint)</li>
+                    <li>Brand</li>
+                </ul>
+            </div>
+
+            <div class="detail-category" id="interior-design" data-aos="fade-up" data-aos-delay="800">
+                <h2><i class="fas fa-couch"></i>Interior Design</h2>
+                <ul>
+                    <li>Modular Kitchens & Wardrobes (Materials, Finishes, Hardware)</li>
+                    <li>False Ceiling Design with Ambient/Task/Accent Lighting</li>
+                    <li>Wall Paneling, Feature Walls & Decorative Finishes</li>
+                    <li>TV Unit, Study, Bar & Storage Systems (Custom Built-ins)</li>
+                    <li>Furniture Design & Fabrication (Ergonomics & Joinery)</li>
+                    <li>Soft Furnishings (Curtains, Blinds, Upholstery Coordination)</li>
+                    <li>Layered Lighting Design & Control (Dimmers/Scenes)</li>
+                    <li>Bathroom Vanities & Mirror Cabinets (Moisture-Resistant)</li>
+                    <li>Space Planning, 3D Walkthroughs & Mockups</li>
+                    <li>On-site Supervision & Finish Quality Checks</li>
+                </ul>
+            </div>
+
+            <div class="detail-category" id="flooring" data-aos="fade-up" data-aos-delay="900">
+                <h2><i class="fas fa-layer-group"></i>Flooring</h2>
+                <ul>
+                    <li>Living & Dining (Type, e.g., Vitrified Tiles)</li>
+                    <li>Bedrooms (Type)</li>
+                    <li>Balcony & Utility (Type)</li>
+                    <li>Staircase (Material)</li>
+                </ul>
+            </div>
+
+            <div class="detail-category" id="electrical" data-aos="fade-up" data-aos-delay="1000">
+                <h2><i class="fas fa-bolt"></i>Electrical</h2>
+                <ul>
+                    <li>Wiring (Brand & Type)</li>
+                    <li>Switches & Sockets (Brand & Type)</li>
+                    <li>Provision for AC, Geyser, Inverter</li>
+                    <li>Light Fixtures (Basic points)</li>
+                </ul>
+            </div>
+
+            <div class="detail-category" id="other-inclusions" data-aos="fade-up" data-aos-delay="1100">
+                <h2><i class="fas fa-plus-circle"></i>Other Inclusions</h2>
+                <ul>
+                    <li>Overhead Tank (Capacity)</li>
+                    <li>Underground Sump (Capacity)</li>
+                    <li>Staircase Railing (Material)</li>
+                    <li>Parapet Wall</li>
+                </ul>
+            </div>
+
+            <div class="detail-category notes" id="notes" data-aos="fade-up" data-aos-delay="1200">
+                <h2><i class="fas fa-info-circle"></i>Notes</h2>
+                <p><strong>Client Responsibilities:</strong></p>
+                <ul>
+                    <li>Temporary electricity and water connection during construction</li>
+                    <li>Governmental approvals and fees (if not specified otherwise)</li>
+                </ul>
+                <p><strong>Exclusions (Unless specified otherwise):</strong></p>
+                <ul>
+                    <li>Compound wall & gate</li>
+                    <li>Interior decoration, loose furniture, appliances</li>
+                    <li>Landscaping</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Navigation -->
+    <div class="floating-nav">
+        <a href="#designs-drawings" title="Designs & Drawings"><i class="fas fa-drafting-compass"></i></a>
+        <a href="#design-consultation" title="Design & Consultation"><i class="fas fa-pencil-ruler"></i></a>
+        <a href="#structure" title="Structure"><i class="fas fa-building"></i></a>
+        <a href="#construction" title="Construction"><i class="fas fa-hard-hat"></i></a>
+        <a href="#kitchen" title="Kitchen"><i class="fas fa-utensils"></i></a>
+        <a href="#bathroom" title="Bathroom"><i class="fas fa-bath"></i></a>
+        <a href="#doors-windows" title="Doors & Windows"><i class="fas fa-door-open"></i></a>
+        <a href="#painting" title="Painting"><i class="fas fa-paint-roller"></i></a>
+        <a href="#interior-design" title="Interior Design"><i class="fas fa-couch"></i></a>
+        <a href="#flooring" title="Flooring"><i class="fas fa-layer-group"></i></a>
+        <a href="#electrical" title="Electrical"><i class="fas fa-bolt"></i></a>
+        <a href="#other-inclusions" title="Other Inclusions"><i class="fas fa-plus-circle"></i></a>
+        <a href="#notes" title="Notes"><i class="fas fa-info-circle"></i></a>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer py-5" style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d); color: white;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0 text-center text-md-start">
+                    <a href="index.html" class="footer-logo display-6 fw-bold" style="color: #fff; text-decoration: none;">Kanasu Design & Construction</a>
+                    <p class="mt-2">Building Dreams Into Reality</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <ul class="nav flex-column flex-md-row justify-content-center gap-3">
+                        <li class="nav-item"><a class="nav-link px-2" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="projects.html">Projects</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="services.html">Services</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="contact.html">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="get-quote.html">Get Quote</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="admin.html">Admin Login</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <div class="footer-contact mt-2">
+                        <span><i class="fas fa-phone-alt me-2"></i>+91 8548878820 | +91 9611574787</span><br>
+                        <span><i class="fas fa-envelope me-2"></i>kanasudesignandconstruction@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="text-center small">&copy; 2025 Kanasu Design & Construction. All Rights Reserved.</div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Section filtering functionality
+        const urlParams = new URLSearchParams(window.location.search);
+        const section = urlParams.get('section');
+        const plan = urlParams.get('plan');
+
+        // Valid sections for filtering
+        const validSections = ['design-consultation', 'construction', 'interior-design'];
+        
+        // Section configurations
+        const sectionConfigs = {
+            'design-consultation': {
+                name: 'Design & Consultation',
+                subtitle: 'Design & Consultation: Scope, process, and deliverables for design and consultation'
+            },
+            'construction': {
+                name: 'Construction',
+                subtitle: 'Construction: Execution scope, QA/QC, safety, and handover deliverables'
+            },
+            'interior-design': {
+                name: 'Interior Design',
+                subtitle: 'Interior Design: Interior finishes, built-ins, lighting, and supervision scope'
+            }
+        };
+
+        function showAllSections() {
+            // Show all sections
+            document.querySelectorAll('.detail-category').forEach(cat => {
+                cat.style.display = 'block';
+            });
+            
+            // Show all nav links
+            document.querySelectorAll('.floating-nav a').forEach(link => {
+                link.style.display = 'block';
+            });
+            
+            // Hide show all control
+            document.getElementById('show-all-control').style.display = 'none';
+            
+            // Reset hero content
+            document.querySelector('.plan-name-placeholder').textContent = plan || '[Select a Plan]';
+            document.querySelector('.hero-subtitle').textContent = 'Comprehensive breakdown of features and specifications';
+            
+            // Update URL without section parameter
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.delete('section');
+            window.history.replaceState({}, '', newUrl);
+        }
+
+        function filterBySection(sectionId) {
+            const config = sectionConfigs[sectionId];
+            if (!config) return;
+
+            // Hide all sections except the target one
+            document.querySelectorAll('.detail-category').forEach(cat => {
+                if (cat.id === sectionId) {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = 'none';
+                }
+            });
+
+            // Hide all nav links except the target one
+            document.querySelectorAll('.floating-nav a').forEach(link => {
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.style.display = 'block';
+                    link.classList.add('active');
+                } else {
+                    link.style.display = 'none';
+                }
+            });
+
+            // Show show all control
+            document.getElementById('show-all-control').style.display = 'block';
+
+            // Update hero content
+            document.querySelector('.plan-name-placeholder').textContent = config.name;
+            document.querySelector('.hero-subtitle').textContent = config.subtitle;
+        }
+
+        // Apply section filtering if valid section parameter exists
+        if (section && validSections.includes(section)) {
+            filterBySection(section);
+        } else {
+            // Update plan title based on URL parameter (existing functionality)
+            if (plan) {
+                document.querySelector('.plan-name-placeholder').textContent = plan;
+            }
+        }
+
+        // Scroll to top functionality
+        const scrollTop = document.querySelector('.scroll-top');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+        scrollTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scroll for floating navigation
+        document.querySelectorAll('.floating-nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight active section in floating navigation
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.detail-category');
+            const navLinks = document.querySelectorAll('.floating-nav a');
+            
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    const id = section.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

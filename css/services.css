@@ -1,0 +1,370 @@
+/* Hero Section */
+.hero-section.services {
+    background-image: url('../images/services-hero.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-color: #222 !important;
+    position: relative;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: brightness(1.15) contrast(1.1);
+}
+
+section.hero-section::before,
+.hero-section::before {
+    content: none !important;
+    background: none !important;
+    display: none !important;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.15); /* subtle overlay for readability */
+    z-index: 1;
+}
+
+.hero-section.services .container {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Plans Section */
+.plans {
+    padding: 100px 0;
+    background: #f8f9fa;
+}
+
+.plans h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    color: #333;
+}
+
+.plan-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.plan-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #007bff, #00ff88);
+}
+
+.plan-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.plan-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #2E7D32, #81C784);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: white;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+}
+
+.card-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #2E3B0E;
+    transition: all 0.3s ease;
+}
+
+.rate {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2E7D32;
+    margin-bottom: 1.5rem;
+}
+
+.rate span {
+    font-size: 1rem;
+    color: #666;
+}
+
+.features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+}
+
+.features li {
+    margin-bottom: 0.5rem;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.features li:hover {
+    color: #2E7D32;
+    transform: translateX(5px);
+}
+
+.features i {
+    color: #81C784;
+    margin-right: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.features li:hover i {
+    color: #2E7D32;
+    transform: scale(1.2);
+}
+
+.plan-card .btn {
+    display: inline-block;
+    padding: 10px 25px;
+    background: linear-gradient(90deg, #2E7D32, #81C784);
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin: 5px;
+}
+
+.plan-card .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+}
+
+.plan-card.premium {
+    background: linear-gradient(135deg, #2E7D32, #81C784);
+    color: white;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.plan-card.premium .card-title,
+.plan-card.premium .card-text {
+    color: white;
+}
+
+.plan-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(46, 125, 50, 0.1);
+}
+
+.plan-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(46, 125, 50, 0.1);
+    border-color: rgba(46, 125, 50, 0.3);
+}
+
+/* Services Section */
+.services-section {
+    padding: 100px 0;
+    background: #f8f9fa;
+    position: relative;
+    overflow: hidden;
+}
+
+.services-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1600607687644-c7171b42498b?auto=format&fit=crop&w=2070&q=80') center/cover;
+    opacity: 0.05;
+    z-index: 0;
+    animation: slowZoom 20s infinite alternate;
+}
+
+@keyframes slowZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+.service-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #007bff, #00ff88);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.service-icon {
+    font-size: 3rem;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.service-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.service-description {
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.service-btn {
+    background: linear-gradient(90deg, #007bff, #00ff88);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.service-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #007bff);
+    transition: width 0.3s ease;
+    z-index: -1;
+}
+
+.service-btn:hover::before {
+    width: 100%;
+}
+
+.service-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+/* Scroll to Top Button */
+.scroll-top {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: #007bff;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.scroll-top.visible {
+    opacity: 1;
+}
+
+/* Floating Contact Button */
+.floating-contact {
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    z-index: 1000;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .navbar-nav {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px;
+        border-radius: 15px;
+    }
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    .plan-card, .service-card {
+        padding: 20px;
+    }
+    .plan-title, .service-title {
+        font-size: 1.5rem;
+    }
+    .plan-price {
+        font-size: 2.5rem;
+    }
+    .plans {
+        padding: 50px 0;
+    }
+    .plan-card {
+        margin-bottom: 30px;
+    }
+} 
