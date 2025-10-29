@@ -1,112 +1,86 @@
-# Supabase Migration & Deployment Guide
-
-## 1. Supabase Setup
-
-1. [Sign up at Supabase](https://supabase.com/) and create a new project.
-2. Get your Supabase URL and anon key from Project Settings > API.
-3. In the Supabase dashboard, go to SQL Editor and run the following SQL to create tables:
-
-### contact_messages
-```sql
-create table contact_messages (
-  id uuid primary key default uuid_generate_v4(),
-  full_name text not null,
-  email text not null,
-  phone text,
-  message text not null,
-  created_at timestamp with time zone default timezone('utc'::text, now())
-);
-```
-
-### quotes
-```sql
-create table quotes (
-  id uuid primary key default uuid_generate_v4(),
-  plan_type text not null,
-  area integer,
-  full_name text not null,
-  email text not null,
-  phone text,
-  location text,
-  additional_requirements text,
-  created_at timestamp with time zone default timezone('utc'::text, now())
-);
-```
-
-### projects
-```sql
-create table projects (
-  id uuid primary key default uuid_generate_v4(),
-  project_name text not null,
-  description text,
-  image_url text,
-  created_at timestamp with time zone default timezone('utc'::text, now())
-);
-```
-
-### testimonials
-```sql
-create table testimonials (
-  id uuid primary key default uuid_generate_v4(),
-  user_name text not null,
-  testimonial_text text,
-  user_image_url text,
-  created_at timestamp with time zone default timezone('utc'::text, now())
-);
-```
-
-4. Go to Storage > Create two buckets:
-   - `project-images`
-   - `testimonial-images`
-
-5. Go to Authentication > Users > Invite or create admin users (email/password).
-
-6. Set up Row Level Security (RLS) as needed for admin-only access.
+<div align="center">
+  <img src="images/KANASU-LOGO.png" alt="Kanasu Logo" width="200"/>
+  
+  # Kanasu Design & Construction
+  
+  **Shaping Dreams Inside and Out**
+  
+  [![Website](https://img.shields.io/badge/Website-Live-success)](https://kanasuconstruction.netlify.app)
+  [![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-blue)]()
+  
+</div>
 
 ---
 
-## 2. Frontend Configuration
+## About Kanasu
 
-1. In `js/supabase-config.js`, replace the placeholders with your Supabase URL and anon key:
-   ```js
-   const SUPABASE_URL = 'https://your-project.supabase.co';
-   const SUPABASE_ANON_KEY = 'your-anon-key';
-   const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-   ```
-2. All Firebase logic has been removed. The following files now use Supabase:
-   - `js/forms.js` (contact & quote forms)
-   - `js/admin-auth.js` (admin login)
-   - `js/scripts.js` (project & testimonial upload)
-   - `js/main.js` (admin dashboard fetch)
+**Kanasu Design & Construction** is a leading architectural and construction firm dedicated to transforming dreams into reality. We specialize in sustainable, high-quality construction projects with a focus on timely delivery and client satisfaction.
+
+### Our Philosophy
+*"We work for passion, not for profit"*
+
+We believe in creating spaces that inspire, function beautifully, and stand the test of time. Every project is a testament to our commitment to excellence and innovation.
 
 ---
 
-## 3. Deploy Frontend to Netlify
+## Our Services
 
-1. Push your project to GitHub.
-2. [Sign up at Netlify](https://www.netlify.com/) and connect your GitHub repo.
-3. Deploy the site. No build step is needed for static HTML/JS/CSS.
-4. Ensure your site loads the correct Supabase config.
+### 🏗️ Design & Consultation
+Expert architectural design and planning services tailored to your vision and requirements.
 
----
+### 🔨 Construction
+End-to-end construction services with quality materials and skilled craftsmanship.
 
-## 4. Usage Notes
-
-- All data is now stored in Supabase tables and storage.
-- Only authenticated admins (via Supabase Auth) can access admin features.
-- You can further secure endpoints using Supabase RLS policies.
+### 🎨 Interior Design
+Creative interior solutions that blend aesthetics with functionality.
 
 ---
 
-## 5. Migration Checklist
+## Why Choose Kanasu?
 
-- [x] Supabase tables created
-- [x] Storage buckets created
-- [x] Admin users set up
-- [x] Frontend JS updated to use Supabase
-- [x] Firebase code deprecated
-- [x] Ready for Netlify deployment
+✅ **Expert Team** - Experienced professionals dedicated to excellence  
+✅ **Quality Materials** - Only the finest materials for lasting durability  
+✅ **Timely Delivery** - Committed to delivering projects on schedule  
+✅ **Customer Satisfaction** - Your satisfaction is our top priority  
+✅ **Sustainable Practices** - Eco-friendly and energy-efficient solutions  
 
 ---
 
-For any issues, refer to [Supabase Docs](https://supabase.com/docs) or [Netlify Docs](https://docs.netlify.com/). 
+## Service Areas
+
+We proudly serve clients across **Karnataka**, bringing innovative design and construction excellence to communities throughout the region.
+
+---
+
+## Contact Us
+
+📞 **Phone:** +91 8548878820 | +91 9611574787  
+📧 **Email:** kanasudesignandconstruction@gmail.com  
+🌐 **Website:** [kanasuconstruction.netlify.app](https://kanasuconstruction.netlify.app)  
+📱 **Instagram:** [@kanasudesing_construction_](https://www.instagram.com/kanasudesing_construction_)
+
+---
+
+## Project Features
+
+- 📱 Responsive Design - Works seamlessly on all devices
+- 🎯 Interactive Gallery - Showcase of completed projects
+- 💬 Client Testimonials - Real feedback from satisfied clients
+- 📝 Online Quote Request - Easy quote submission system
+- 🔐 Admin Dashboard - Secure content management system
+
+---
+
+<div align="center">
+  
+  ### Get Started Today!
+  
+  [**Get a Quote**](https://kanasuconstruction.netlify.app/get-quote.html) | [**View Projects**](https://kanasuconstruction.netlify.app/projects.html) | [**Contact Us**](https://kanasuconstruction.netlify.app/contact.html)
+  
+  ---
+  
+  © 2025 Kanasu Design & Construction. All Rights Reserved.
+  
+  *Building Dreams Into Reality*
+  
+</div> 
