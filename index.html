@@ -434,7 +434,7 @@
             <h2 class="text-center mb-5 display-5 fw-bold" data-aos="fade-up">Our Projects</h2>
             <div class="project-slider-wrapper">
                 <button class="slider-arrow project-arrow left" aria-label="Previous projects">&#8592;</button>
-                <div class="project-slider row g-4 justify-content-center" id="projects-list">
+                <div class="project-slider row g-4 justify-content-center d-flex flex-row flex-nowrap" id="projects-list" style="align-items: stretch;">
                     <!-- Projects will be rendered here by JS -->
                 </div>
                 <button class="slider-arrow project-arrow right" aria-label="Next projects">&#8594;</button>
@@ -448,7 +448,7 @@
             <h2 class="text-center mb-5 display-5 fw-bold" data-aos="fade-up">Client Testimonials</h2>
             <div class="testimonial-slider-wrapper">
                 <button class="slider-arrow testimonial-arrow left" aria-label="Previous testimonials">&#8592;</button>
-                <div class="testimonial-slider row g-4 justify-content-center" id="testimonials-list">
+                <div class="testimonial-slider row g-4 justify-content-center d-flex flex-row flex-nowrap" id="testimonials-list" style="align-items: stretch;">
                     <!-- Testimonials will be rendered here by JS -->
                 </div>
                 <button class="slider-arrow testimonial-arrow right" aria-label="Next testimonials">&#8594;</button>
@@ -617,59 +617,156 @@
     </script>
     <script type="module">
     import { supabase } from './js/supabase-config.js';
+    
+    let allTestimonials = [];
+    let currentTestimonialPage = 0;
+    const testimonialsPerPage = 2; // Show 2 testimonials side by side
+    let testimonialAutoSlideInterval;
+    
     async function renderTestimonials() {
         const testimonialsList = document.getElementById('testimonials-list');
         testimonialsList.innerHTML = '<div class="col-12 text-center">Loading testimonials...</div>';
+        
         const { data: testimonials, error } = await supabase
             .from('testimonials')
             .select('*')
             .order('created_at', { ascending: false });
+            
         if (error) {
+            console.error('Error loading testimonials:', error);
             testimonialsList.innerHTML = '<div class="col-12 text-center text-danger">Failed to load testimonials.</div>';
             return;
         }
+        
         if (!testimonials || testimonials.length === 0) {
             testimonialsList.innerHTML = '<div class="col-12 text-center">No testimonials found.</div>';
             return;
         }
-        testimonialsList.innerHTML = testimonials.map(testimonial => `
-            <div class="col-md-6 col-lg-6" data-aos="fade-up">
-                <div class="testimonial-card-redesign h-100">
-                    <div class="testimonial-content">
-                        <div class="testimonial-text-content">
-                            <p class="testimonial-quote">"${testimonial.testimonial_text}"</p>
-                            <div class="testimonial-author">
-                                <strong>${testimonial.user_name}</strong>
+        
+        allTestimonials = testimonials;
+        displayTestimonialPage(0);
+        startTestimonialAutoSlide();
+    }
+    
+    function displayTestimonialPage(pageIndex) {
+        const testimonialsList = document.getElementById('testimonials-list');
+        const totalPages = Math.ceil(allTestimonials.length / testimonialsPerPage);
+        
+        // Wrap around if needed
+        if (pageIndex < 0) pageIndex = totalPages - 1;
+        if (pageIndex >= totalPages) pageIndex = 0;
+        
+        currentTestimonialPage = pageIndex;
+        const start = pageIndex * testimonialsPerPage;
+        const end = start + testimonialsPerPage;
+        const pageTestimonials = allTestimonials.slice(start, end);
+        
+        testimonialsList.innerHTML = pageTestimonials.map(testimonial => {
+            const defaultAvatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(testimonial.user_name) + '&background=198754&color=fff&size=80';
+            let imgSrc = defaultAvatar;
+            
+            if (testimonial.user_image_url && 
+                testimonial.user_image_url !== null && 
+                typeof testimonial.user_image_url === 'string' && 
+                testimonial.user_image_url.trim() !== '' && 
+                testimonial.user_image_url !== 'null') {
+                
+                imgSrc = testimonial.user_image_url.startsWith('http') 
+                    ? testimonial.user_image_url 
+                    : `https://pjzdfqhwgbbqsctvcveq.supabase.co/storage/v1/object/public/testimonial-images/${testimonial.user_image_url}`;
+            }
+            
+            return `
+                <div class="col-6 col-md-6" data-aos="fade-up" style="min-width: 45%;">
+                    <div class="testimonial-card-redesign h-100">
+                        <div class="testimonial-content">
+                            <div class="testimonial-text-content">
+                                <p class="testimonial-quote">"${testimonial.testimonial_text || ''}"</p>
+                                <div class="testimonial-author">
+                                    <strong>${testimonial.user_name}</strong>
+                                </div>
                             </div>
-                        </div>
-                        <div class="testimonial-avatar-wrapper">
-                            <img src="${testimonial.user_image_url || 'https://via.placeholder.com/80?text=User'}" class="testimonial-avatar" alt="${testimonial.user_name}" role="img" aria-label="Testimonial user: ${testimonial.user_name}">
+                            <div class="testimonial-avatar-wrapper">
+                                <img src="${imgSrc}" class="testimonial-avatar" alt="${testimonial.user_name}" onerror="this.onerror=null; this.src='${defaultAvatar}'" role="img" aria-label="Testimonial user: ${testimonial.user_name}">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
+    
+    function startTestimonialAutoSlide() {
+        // Clear any existing interval
+        if (testimonialAutoSlideInterval) {
+            clearInterval(testimonialAutoSlideInterval);
+        }
+        
+        // Auto-advance every 30 seconds
+        testimonialAutoSlideInterval = setInterval(() => {
+            displayTestimonialPage(currentTestimonialPage + 1);
+        }, 30000);
+    }
+    
+    // Arrow button handlers for testimonials
+    document.querySelector('.testimonial-arrow.left').addEventListener('click', () => {
+        displayTestimonialPage(currentTestimonialPage - 1);
+        startTestimonialAutoSlide(); // Reset timer on manual navigation
+    });
+    
+    document.querySelector('.testimonial-arrow.right').addEventListener('click', () => {
+        displayTestimonialPage(currentTestimonialPage + 1);
+        startTestimonialAutoSlide(); // Reset timer on manual navigation
+    });
+    
     renderTestimonials();
     </script>
     <script type="module">
     import { supabase } from './js/supabase-config.js';
+    
+    let allProjects = [];
+    let currentProjectPage = 0;
+    const projectsPerPage = 2; // Show 2 projects side by side
+    let projectAutoSlideInterval;
+    
     async function renderProjects() {
         const projectsList = document.getElementById('projects-list');
         projectsList.innerHTML = '<div class="col-12 text-center">Loading projects...</div>';
+        
         const { data: projects, error } = await supabase
             .from('projects')
             .select('*')
             .order('created_at', { ascending: false });
+            
         if (error) {
             projectsList.innerHTML = '<div class="col-12 text-center text-danger">Failed to load projects.</div>';
             return;
         }
+        
         if (!projects || projects.length === 0) {
             projectsList.innerHTML = '<div class="col-12 text-center">No projects found.</div>';
             return;
         }
-        projectsList.innerHTML = projects.map(project => {
+        
+        allProjects = projects;
+        displayProjectPage(0);
+        startProjectAutoSlide();
+    }
+    
+    function displayProjectPage(pageIndex) {
+        const projectsList = document.getElementById('projects-list');
+        const totalPages = Math.ceil(allProjects.length / projectsPerPage);
+        
+        // Wrap around if needed
+        if (pageIndex < 0) pageIndex = totalPages - 1;
+        if (pageIndex >= totalPages) pageIndex = 0;
+        
+        currentProjectPage = pageIndex;
+        const start = pageIndex * projectsPerPage;
+        const end = start + projectsPerPage;
+        const pageProjects = allProjects.slice(start, end);
+        
+        projectsList.innerHTML = pageProjects.map(project => {
             let imgSrc = 'https://via.placeholder.com/400x220?text=No+Image';
             if (project.image_url) {
                 if (project.image_url.startsWith('http')) {
@@ -679,7 +776,7 @@
                 }
             }
             return `
-                <div class="col-md-6 col-lg-4" data-aos="fade-up">
+                <div class="col-6 col-md-6" data-aos="fade-up" style="min-width: 45%;">
                     <div class="project-card h-100 d-flex flex-column align-items-center">
                         <div class="project-image-container-fix">
                             <img src="${imgSrc}" class="project-image-fix" alt="${project.project_name}" role="img" aria-label="Project image: ${project.project_name}">
@@ -693,6 +790,30 @@
             `;
         }).join('');
     }
+    
+    function startProjectAutoSlide() {
+        // Clear any existing interval
+        if (projectAutoSlideInterval) {
+            clearInterval(projectAutoSlideInterval);
+        }
+        
+        // Auto-advance every 30 seconds
+        projectAutoSlideInterval = setInterval(() => {
+            displayProjectPage(currentProjectPage + 1);
+        }, 30000);
+    }
+    
+    // Arrow button handlers for projects
+    document.querySelector('.project-arrow.left').addEventListener('click', () => {
+        displayProjectPage(currentProjectPage - 1);
+        startProjectAutoSlide(); // Reset timer on manual navigation
+    });
+    
+    document.querySelector('.project-arrow.right').addEventListener('click', () => {
+        displayProjectPage(currentProjectPage + 1);
+        startProjectAutoSlide(); // Reset timer on manual navigation
+    });
+    
     renderProjects();
     </script>
 </body>

@@ -253,6 +253,7 @@
                 .select('*')
                 .order('created_at', { ascending: false });
             if (error) {
+                console.error('Error loading testimonials:', error);
                 testimonialsList.innerHTML = '<div class="col-12 text-center text-danger">Failed to load testimonials.</div>';
                 return;
             }
@@ -260,27 +261,46 @@
                 testimonialsList.innerHTML = '<div class="col-12 text-center">No testimonials found.</div>';
                 return;
             }
-            testimonialsList.innerHTML = testimonials.map(testimonial => `
-                <div class="col-md-6 col-lg-6" data-aos="fade-up">
-                    <div class="testimonial-card-redesign h-100">
-                        <div class="testimonial-content">
-                            <div class="testimonial-text-content">
-                                <p class="testimonial-quote">"${testimonial.testimonial_text}"</p>
-                                <div class="testimonial-author">
-                                    <strong>${testimonial.user_name}</strong>
+            testimonialsList.innerHTML = testimonials.map(testimonial => {
+                const defaultAvatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(testimonial.user_name) + '&background=198754&color=fff&size=80';
+                let imgSrc = defaultAvatar;
+                
+                // Check if image URL exists and is valid
+                if (testimonial.user_image_url && 
+                    testimonial.user_image_url !== null && 
+                    typeof testimonial.user_image_url === 'string' && 
+                    testimonial.user_image_url.trim() !== '' && 
+                    testimonial.user_image_url !== 'null') {
+                    
+                    // Use the URL directly if it's already a full URL, otherwise construct it
+                    imgSrc = testimonial.user_image_url.startsWith('http') 
+                        ? testimonial.user_image_url 
+                        : `https://pjzdfqhwgbbqsctvcveq.supabase.co/storage/v1/object/public/testimonial-images/${testimonial.user_image_url}`;
+                }
+                
+                return `
+                    <div class="col-md-6 col-lg-6" data-aos="fade-up">
+                        <div class="testimonial-card-redesign h-100">
+                            <div class="testimonial-content">
+                                <div class="testimonial-text-content">
+                                    <p class="testimonial-quote">"${testimonial.testimonial_text || ''}"</p>
+                                    <div class="testimonial-author">
+                                        <strong>${testimonial.user_name}</strong>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="testimonial-avatar-wrapper">
-                                <img src="${testimonial.user_image_url || 'https://via.placeholder.com/80?text=User'}" class="testimonial-avatar" alt="${testimonial.user_name}" role="img" aria-label="Testimonial user: ${testimonial.user_name}">
+                                <div class="testimonial-avatar-wrapper">
+                                    <img src="${imgSrc}" class="testimonial-avatar" alt="${testimonial.user_name}" onerror="this.onerror=null; this.src='${defaultAvatar}'" role="img" aria-label="Testimonial user: ${testimonial.user_name}">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         renderProjects();
         renderTestimonials();
     </script>
 </body>
+</html>
 </html> 

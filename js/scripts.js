@@ -29,28 +29,82 @@ export async function uploadProject({ project_name, description, imageFile }) {
 
 // Upload Testimonial (Image + Metadata)
 export async function uploadTestimonial({ user_name, testimonial_text, imageFile }) {
-  let imageUrl = '';
-  if (imageFile) {
-    const filePath = `${Date.now()}_${imageFile.name}`;
-    const { data: storageData, error: storageError } = await supabase
-      .storage
-      .from('testimonial-images')
-      .upload(filePath, imageFile, { contentType: imageFile.type });
-    if (storageError) {
-      return { error: 'Failed to upload image. Please try again.' };
+  console.log('uploadTestimonial called:', { user_name, testimonial_text, hasImage: !!imageFile });
+  
+  try {
+    let imageUrl = null;
+    
+    if (imageFile) {
+      console.log('Uploading image file:', imageFile.name, imageFile.type, imageFile.size);
+      
+      // Create a unique file name
+      const fileExt = imageFile.name.split('.').pop();
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = fileName;
+      
+      console.log('File path for upload:', filePath);
+      
+      // Upload to Supabase Storage
+      const { data: storageData, error: storageError } = await supabase
+        .storage
+        .from('testimonial-images')
+        .upload(filePath, imageFile, { 
+          contentType: imageFile.type,
+          cacheControl: '3600',
+          upsert: false
+        });
+      
+      if (storageError) {
+        console.error('Storage upload error:', storageError);
+        return { error: `Upload failed: ${storageError.message}` };
+      }
+      
+      console.log('Image uploaded successfully. Storage data:', storageData);
+      
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('testimonial-images')
+        .getPublicUrl(storageData.path);
+      
+      imageUrl = urlData.publicUrl;
+      console.log('Generated public URL:', imageUrl);
+      
+      if (!imageUrl || imageUrl === '') {
+        console.error('Failed to generate public URL');
+        return { error: 'Failed to generate image URL' };
+      }
+    } else {
+      console.log('No image file provided, creating testimonial without avatar');
     }
-    imageUrl = supabase.storage.from('testimonial-images').getPublicUrl(storageData.path).data.publicUrl;
+
+    // Prepare data for insertion
+    const insertData = { 
+      user_name, 
+      testimonial_text,
+      user_image_url: imageUrl || null  // Always include this field
+    };
+    
+    console.log('Inserting testimonial into database:', insertData);
+    console.log('Image URL to save:', imageUrl || '(null)');
+    
+    // Insert into database
+    const { data: insertedData, error: dbError } = await supabase
+      .from('testimonials')
+      .insert([insertData])
+      .select();
+
+    if (dbError) {
+      console.error('Database insert error:', dbError);
+      return { error: `Database error: ${dbError.message}` };
+    }
+
+    console.log('Testimonial inserted successfully:', insertedData);
+    return { error: null, data: insertedData };
+    
+  } catch (err) {
+    console.error('Exception in uploadTestimonial:', err);
+    return { error: `Error: ${err.message}` };
   }
-
-  const { error: dbError } = await supabase
-    .from('testimonials')
-    .insert([{ user_name, testimonial_text, user_image_url: imageUrl }]);
-
-  if (dbError) {
-    return { error: 'Failed to save testimonial. Please try again.' };
-  }
-
-  return { error: null };
 }
 
 // Delete Project by ID
@@ -105,30 +159,90 @@ export async function deleteTestimonial(id) {
 }
 
 // Update Testimonial by ID
-export async function updateTestimonial(id, { user_name, user_role, testimonial_text, imageFile }) {
-  let imageUrl = null;
-  if (imageFile) {
-    const filePath = `${Date.now()}_${imageFile.name}`;
-    const { data: storageData, error: storageError } = await supabase
-      .storage
-      .from('testimonial-images')
-      .upload(filePath, imageFile, { contentType: imageFile.type });
-    if (storageError) {
-      return { error: 'Failed to upload image. Please try again.' };
+export async function updateTestimonial(id, { user_name, testimonial_text, imageFile }) {
+  console.log('updateTestimonial called:', { id, user_name, testimonial_text, hasImage: !!imageFile });
+  
+  try {
+    let imageUrl = null;
+    
+    if (imageFile) {
+      console.log('Uploading new image file:', imageFile.name, imageFile.type, imageFile.size);
+      
+      // Create a unique file name
+      const fileExt = imageFile.name.split('.').pop();
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = fileName;
+      
+      console.log('File path for upload:', filePath);
+      
+      // Upload to Supabase Storage
+      const { data: storageData, error: storageError } = await supabase
+        .storage
+        .from('testimonial-images')
+        .upload(filePath, imageFile, { 
+          contentType: imageFile.type,
+          cacheControl: '3600',
+          upsert: false
+        });
+      
+      if (storageError) {
+        console.error('Storage upload error:', storageError);
+        return { error: `Upload failed: ${storageError.message}` };
+      }
+      
+      console.log('Image uploaded successfully. Storage data:', storageData);
+      
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('testimonial-images')
+        .getPublicUrl(storageData.path);
+      
+      imageUrl = urlData.publicUrl;
+      console.log('Public URL generated:', imageUrl);
+      
+      if (!imageUrl || imageUrl === '') {
+        console.error('Failed to generate public URL');
+        return { error: 'Failed to generate image URL' };
+      }
+    } else {
+      console.log('No new image provided, keeping existing avatar');
     }
-    imageUrl = supabase.storage.from('testimonial-images').getPublicUrl(storageData.path).data.publicUrl;
+    
+    // Prepare update data
+    const updateData = { 
+      user_name, 
+      testimonial_text
+    };
+    
+    // Only update image URL if a new one was uploaded
+    if (imageUrl) {
+      updateData.user_image_url = imageUrl;
+      console.log('Updating with new image URL:', imageUrl);
+    } else {
+      console.log('No new image, keeping existing avatar');
+    }
+    
+    console.log('Updating testimonial in database:', updateData);
+    
+    // Update in database
+    const { data: updatedData, error } = await supabase
+      .from('testimonials')
+      .update(updateData)
+      .eq('id', id)
+      .select();
+    
+    if (error) {
+      console.error('Database update error:', error);
+      return { error: `Database error: ${error.message}` };
+    }
+    
+    console.log('Testimonial updated successfully:', updatedData);
+    return { error: null, data: updatedData };
+    
+  } catch (err) {
+    console.error('Exception in updateTestimonial:', err);
+    return { error: `Error: ${err.message}` };
   }
-  const updateData = { user_name, testimonial_text };
-  if (user_role) updateData.user_role = user_role;
-  if (imageUrl) updateData.user_image_url = imageUrl;
-  const { error } = await supabase
-    .from('testimonials')
-    .update(updateData)
-    .eq('id', id);
-  if (error) {
-    return { error: 'Failed to update testimonial. Please try again.' };
-  }
-  return { error: null };
 }
 
 // Fetch all projects
